@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Wrapper that ensures the WCAG skill's Python env and Playwright Chromium are ready,
+# then forwards to the `wcag-audit` CLI defined in pyproject.toml.
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+if ! command -v uv >/dev/null 2>&1; then
+    echo "wcag-audit requires uv (https://docs.astral.sh/uv/)." >&2
+    exit 1
+fi
+
+# Sync dependencies. Quiet on subsequent runs.
+uv --project "$SCRIPT_DIR" sync --quiet
+
+# Ensure axe.min.js is present (bundled with the skill).
+if [[ ! -f "$SCRIPT_DIR/src/wcag_audit/axe.min.js" ]]; then
+    echo "axe.min.js is missing from $SCRIPT_DIR/src/wcag_audit/." >&2
+    echo "Run: $SCRIPT_DIR/install-axe.sh" >&2
+    exit 1
+fi
+
+exec uv --project "$SCRIPT_DIR" run wcag-audit "$@"

@@ -1,0 +1,22 @@
+[project]
+name = "wcag-audit"
+version = "0.1.0"
+description = "WCAG 2.1 accessibility audit CLI using axe-core via Playwright"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "playwright>=1.45",
+]
+
+[project.scripts]
+wcag-audit = "wcag_audit.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wcag_audit"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"src/wcag_audit/axe.min.js" = "wcag_audit/axe.min.js"

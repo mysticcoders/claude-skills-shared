@@ -1,0 +1,30 @@
+# .pr-impact.toml — per-repo policy for /pr-impact-review
+# Copy to the repo root and edit. THIS FILE IS ITSELF LEVEL 3:
+# a change to the rules cannot be graded by the rules.
+
+# Paths whose modification makes a PR at least Level 2 (structural).
+# Public surfaces, shared contracts, cross-package plumbing.
+boundary_paths = [
+  "packages/*/src/index.ts",
+  "packages/*/src/routes.*",
+  "packages/*-types/**",
+  "**/schema.*",
+  "**/migrations/**",
+  "**/*.proto",
+  "infra/**",
+]
+
+# Paths whose modification makes a PR Level 3 (strategic).
+# Foundational decisions, release machinery, security posture.
+strategic_paths = [
+  "turbo.json",
+  "pnpm-workspace.yaml",
+  "**/auth/**",
+  "docs/adr/**",
+  "Dockerfile*",
+]
+
+# Level 1 requires the changed lines to be covered by executing tests.
+# Below this, escalate to Level 2 regardless of other signals.
+# Rationale: a green pipeline on untested code proves nothing.
+min_changed_line_coverage = 0.70

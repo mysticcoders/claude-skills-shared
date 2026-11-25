@@ -1,0 +1,8 @@
+*.log
+*.bak-*
+*.retired
+__pycache__/
+.venv/
+node_modules/
+.DS_Store
+skills/inbox-transcribe/memoret-*.txt
